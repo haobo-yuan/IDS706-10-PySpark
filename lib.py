@@ -1,34 +1,38 @@
-import pandas as pd
-import polars as pl
-import matplotlib.pyplot as plt
+from pyspark.sql import SparkSession
+from pyspark.sql.functions import col, year, mean, stddev, expr
+
+# Initialize SparkSession
+spark = SparkSession.builder.appName("AAPL_Stock_Analysis").getOrCreate()
 
 # Data Preprocessing
 def preprocess_data():
-    # Read the data using Polars
-    stock = pl.read_csv("data/NASDAQ_100_Data_From_2010.csv", separator="\t")
+    # Read the data from a CSV file using Spark
+    stock = spark.read.csv("data/NASDAQ_100_Data_From_2010.csv", sep="\t", header=True, inferSchema=True)
 
-    # Filter for AAPL stock data
-    stock_AAPL = stock.filter(pl.col("Name") == "AAPL")
+    # Filter the data for AAPL stock only
+    stock_AAPL = stock.filter(col("Name") == "AAPL")
 
-    # Convert 'Date' column to datetime
-    stock_AAPL = stock_AAPL.with_columns(
-        pl.col("Date").str.strptime(pl.Date, "%Y-%m-%d")
-    )
-
-    # Add 'Year' column
-    stock_AAPL = stock_AAPL.with_columns(pl.col("Date").dt.year().alias("Year"))
+    # Convert 'Date' column to date format and add a new 'Year' column
+    stock_AAPL = stock_AAPL.withColumn("Date", expr("to_date(Date, 'yyyy-MM-dd')"))
+    stock_AAPL = stock_AAPL.withColumn("Year", year("Date"))
 
     return stock_AAPL
 
-
-# Plotting the statistics
+# Plotting function for statistics
 def generate_plot(yearly_stats):
+    import matplotlib.pyplot as plt
+    
+    # Convert Spark DataFrame to Pandas DataFrame for plotting
+    yearly_stats_pd = yearly_stats.toPandas()
+    
+    # Extract the data for plotting
+    years = yearly_stats_pd["Year"].values
+    means = yearly_stats_pd["mean"].values
+    medians = yearly_stats_pd["median"].values
+    stds = yearly_stats_pd["std"].values
+    
+    # Plot the statistics
     plt.figure(figsize=(15, 6))
-    years = yearly_stats["Year"].to_numpy()
-    means = yearly_stats["mean"].to_numpy()
-    medians = yearly_stats["median"].to_numpy()
-    stds = yearly_stats["std"].to_numpy()
-
     plt.plot(years, means, label="Mean", marker="o")
     plt.plot(years, medians, label="Median", marker="x")
     plt.plot(years, stds, label="Standard Deviation", marker="s")

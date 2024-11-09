@@ -1,30 +1,19 @@
-# script.py
-
-import polars as pl
-import os
 from lib import preprocess_data, generate_plot
-
+from pyspark.sql.functions import mean, stddev, expr
 
 def main():
     # Load and preprocess data
     stock_AAPL = preprocess_data()
 
-    # Descriptive Statistics
-    yearly_stats = (
-        stock_AAPL.group_by("Year")
-        .agg(
-            [
-                pl.col("Close").mean().alias("mean"),
-                pl.col("Close").median().alias("median"),
-                pl.col("Close").std().alias("std"),
-            ]
-        )
-        .sort("Year")  # Ensure data is sorted by 'Year'
-    )
+    # Calculate descriptive statistics by grouping by year
+    yearly_stats = stock_AAPL.groupBy("Year").agg(
+        mean("Close").alias("mean"),                   # Mean of 'Close' price per year
+        expr("percentile_approx(Close, 0.5)").alias("median"),  # Approximate median of 'Close' price
+        stddev("Close").alias("std")                   # Standard deviation of 'Close' price
+    ).orderBy("Year")                                  # Ensure data is sorted by 'Year'
 
-    # Generate Visualization
+    # Generate visualization
     generate_plot(yearly_stats)
-
 
 if __name__ == "__main__":
     main()

@@ -1,11 +1,23 @@
-![Install Dependencies](https://github.com/haobo-yuan/IDS706-3-Polars-Stat/actions/workflows/install.yml/badge.svg)
-![Format Code](https://github.com/haobo-yuan/IDS706-3-Polars-Stat/actions/workflows/format.yml/badge.svg)
-![Lint Code](https://github.com/haobo-yuan/IDS706-3-Polars-Stat/actions/workflows/lint.yml/badge.svg)
-![Run Tests](https://github.com/haobo-yuan/IDS706-3-Polars-Stat/actions/workflows/test.yml/badge.svg)
+![Install Dependencies](https://github.com/haobo-yuan/IDS706-10-PySpark/actions/workflows/install.yml/badge.svg)
+![Format Code](https://github.com/haobo-yuan/IDS706-10-PySpark/actions/workflows/format.yml/badge.svg)
+![Lint Code](https://github.com/haobo-yuan/IDS706-10-PySpark/actions/workflows/lint.yml/badge.svg)
+![Run Tests](https://github.com/haobo-yuan/IDS706-10-PySpark/actions/workflows/test.yml/badge.svg)
 
-# IDS-706 Data Engineering: Project 3
+# IDS-706 Data Engineering: Project 10
+
+This is IDS-706 week 10 project which involves using PySpark to perform data processing on a large dataset and includes at least one Spark SQL query and one data transformatio
+
+This project could be implemented locally by install Spark and PySpark, or by using the GitHub Codespaces with a Linux image. Using DataBricks is also an option, but considering the budget and lots of differences between working on it and on local/Codespaces, DataBricks is not recommended.
+
+
+## Reference
+- [devcontainer & Dockerfile from Jeremy](https://github.com/nogibjj/Jeremy_Tan_IDS706_Week10/tree/main/.devcontainer)
+
+---
+
 ## AAPL Price Statistics (2010-2021)
-This is a IDS-706 week 3 project that also calculates the mean, median,and standard deviation of AAPL stock close prices from 2010 to 2021.
+
+This project calculates the mean, median,and standard deviation of AAPL stock close prices from 2010 to 2021.
 
 ![Logo Nasdaq](pictures/Logo_Nasdaq.png)![Logo AAPL](pictures/Logo_AAPL.png)
 
@@ -38,33 +50,3 @@ particularly in 2020 and 2021, likely driven by strong demand for electronics du
 and its market leadership in innovation. While volatility increased in the later years, especially
 in 2020 with the standard deviation peaking at 21.81, Apple's overall performance was robust,
 reflecting its resilience and growth in the global tech industry.
-
----
-
-## Projection Structure
-The primary files in this project are:
-```
-    IDS706-3-Polars-Stat/
-    ├── data/
-    │   └── NASDAQ_100_Data_From_2010.csv
-    ├── pictures/
-    │   └── plot.png
-    ├── .github/workflows/
-    │   └── install.yml
-    │   └── format.yml
-    │   └── lint.yml
-    │   └── test.yml
-    ├── lib.py
-    ├── test_lib.py
-    ├── main.ipynb
-    ├── main.py
-    ├── test_main.py
-    ├── README.md
-    ├── requirements.txt
-    └── Makefile
-```
-
-## Demo Video
-Here is a demo video will show you a detailed explanation of continuous integration using GitHub Actions of Python data science project(individual project #1).
-
-[![Watch the video](https://img.youtube.com/vi/yJRoMepMxO8/hqdefault.jpg)](https://youtu.be/yJRoMepMxO8)
