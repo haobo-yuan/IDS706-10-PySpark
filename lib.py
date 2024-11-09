@@ -1,5 +1,6 @@
 from pyspark.sql import SparkSession
 from pyspark.sql.functions import col, year, mean, stddev, expr
+from datetime import datetime
 
 # Initialize SparkSession
 spark = SparkSession.builder.appName("AAPL_Stock_Analysis").getOrCreate()
@@ -41,4 +42,12 @@ def generate_plot(yearly_stats):
     plt.xlabel("Year")
     plt.ylabel("Price")
     plt.legend()
+
+    # Add timestamp
+    timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    plt.text(0.95, 0.01, f"Generated on: {timestamp}", 
+             verticalalignment='bottom', horizontalalignment='right', 
+             transform=plt.gca().transAxes, 
+             color='gray', fontsize=8)
+    
     plt.savefig("pictures/plot.png")

@@ -12,6 +12,9 @@ def main():
         stddev("Close").alias("std")                   # Standard deviation of 'Close' price
     ).orderBy("Year")                                  # Ensure data is sorted by 'Year'
 
+    # Show the results
+    yearly_stats.show()
+    
     # Generate visualization
     generate_plot(yearly_stats)
 

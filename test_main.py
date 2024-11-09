@@ -1,33 +1,39 @@
-# test_script.py
-
-import unittest
-import subprocess
+from main import main
+from lib import spark
+from pyspark.sql import Row
+import pytest
 import os
 
+@pytest.fixture(scope="module")
+def sample_data():
+    # Create sample data similar to the expected CSV structure
+    data = [
+        Row(Date="2010-01-04", Close=30.5725, Name="AAPL"),
+        Row(Date="2010-01-05", Close=30.625, Name="AAPL"),
+        Row(Date="2011-01-03", Close=40.0, Name="AAPL"),
+        Row(Date="2011-01-04", Close=41.0, Name="AAPL"),
+        Row(Date="2012-01-03", Close=50.0, Name="AAPL"),
+        Row(Date="2012-01-04", Close=51.0, Name="AAPL"),
+        Row(Date="2012-01-05", Close=52.0, Name="AAPL"),
+    ]
+    return spark.createDataFrame(data)
 
-class TestScript(unittest.TestCase):
-    def test_script_execution(self):
-        # Ensure 'pictures' directory exists
-        os.makedirs("pictures", exist_ok=True)
+def test_main(monkeypatch, sample_data, capsys):
+    # Mock preprocess_data to return sample_data
+    monkeypatch.setattr("lib.preprocess_data", lambda: sample_data)
 
-        # Remove 'plot.png' if it exists
-        plot_path = "pictures/plot.png"
-        if os.path.exists(plot_path):
-            os.remove(plot_path)
+    # Run the main function
+    main()
 
-        # Run the script and capture output
-        result = subprocess.run(["python", "main.py"], capture_output=True, text=True)
+    # Capture output and verify yearly statistics in the output
+    captured = capsys.readouterr()
+    assert "Year" in captured.out
+    assert "mean" in captured.out
+    assert "median" in captured.out
+    assert "std" in captured.out
 
-        # Check if script ran successfully
-        self.assertEqual(
-            result.returncode, 0, "main.py did not execute successfully."
-        )
+    # Check if the plot image file is created
+    assert os.path.exists("pictures/plot.png")
 
-        # Check if 'plot.png' was created
-        self.assertTrue(
-            os.path.exists(plot_path), "'plot.png' was not created by script.py."
-        )
-
-
-if __name__ == "__main__":
-    unittest.main()
+    # Clean up
+    os.remove("pictures/plot.png")

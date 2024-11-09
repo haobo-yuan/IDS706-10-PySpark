@@ -7,11 +7,45 @@
 
 This is IDS-706 week 10 project which involves using PySpark to perform data processing on a large dataset and includes at least one Spark SQL query and one data transformatio
 
-This project could be implemented locally by install Spark and PySpark, or by using the GitHub Codespaces with a Linux image. Using DataBricks is also an option, but considering the budget and lots of differences between working on it and on local/Codespaces, DataBricks is not recommended.
+This project could be implemented locally by installing Spark and PySpark, or by using the GitHub Codespaces with a Linux image. Using DataBricks is also an option, but considering the budget and lots of differences between working on it and on local/Codespaces, DataBricks is not recommended.
+
+## Project Details
+
+### Screenshots of successful run
+![Screenshot](pictures/SucceedRunSparkLocally.png)
 
 
-## Reference
-- [devcontainer & Dockerfile from Jeremy](https://github.com/nogibjj/Jeremy_Tan_IDS706_Week10/tree/main/.devcontainer)
+### Spark SQL Query and Data Transformation
+
+This project includes both data transformations and a Spark SQL query:
+
+- **Data Transformations**: The code utilizes `groupBy` and `agg` functions to calculate the yearly mean, median, and standard deviation of AAPL stock closing prices. These operations are essential for aggregating the data by year and computing relevant statistics.
+
+- **Spark SQL Query**: The `expr` function is used with `percentile_approx` to approximate the median of the closing prices. This function call demonstrates the use of a Spark SQL expression within the PySpark framework, allowing efficient computation of the median value for large datasets.
+
+### Instructions to run the project locally
+```bash
+# Clone the repository
+git clone https://github.com/haobo-yuan/IDS706-10-PySpark.git
+# Change the directory
+cd IDS706-10-PySpark
+# Install the dependencies
+make install
+# Install Java 11, which is required by Spark
+sudo apt update
+sudo apt install openjdk-11-jdk
+# Add JAVA_HOME to the environment variables
+echo "export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64" >> ~/.bashrc
+echo "export PATH=$JAVA_HOME/bin:$PATH" >> ~/.bashrc
+source ~/.bashrc
+# Run the project
+make run
+```
+
+### Reference
+[devcontainer & Dockerfile from Jeremy](https://github.com/nogibjj/Jeremy_Tan_IDS706_Week10/tree/main/.devcontainer)
+
+But I later I choose to run locally. So those files are not really used when running on my end.
 
 ---
 
