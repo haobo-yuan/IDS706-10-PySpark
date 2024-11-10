@@ -1,6 +1,7 @@
 from pyspark.sql import SparkSession
 from pyspark.sql.functions import col, year, mean, stddev, expr
 from datetime import datetime
+import matplotlib.pyplot as plt
 
 # Initialize SparkSession
 spark = SparkSession.builder.appName("AAPL_Stock_Analysis").getOrCreate()
@@ -21,7 +22,6 @@ def preprocess_data():
 
 # Plotting function for statistics
 def generate_plot(yearly_stats):
-    import matplotlib.pyplot as plt
     
     # Convert Spark DataFrame to Pandas DataFrame for plotting
     yearly_stats_pd = yearly_stats.toPandas()

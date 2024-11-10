@@ -12,4 +12,5 @@ ruff==0.0.290  # for running pylint on notebooks
 
 
 # DATA
+matplotlib==3.5.1  # for plotting
 pyspark==3.2.1  # PySpark for Spark-based data manipulation
